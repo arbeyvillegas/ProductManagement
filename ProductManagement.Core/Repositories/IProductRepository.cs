@@ -1,13 +1,14 @@
 ﻿using ProductManagement.Core.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProductManagement.Core.Repositories
 {
     public interface IProductRepository
     {
-        IEnumerable<Product> Get();
+        IQueryable<Product> Get();
         Product Get(int id);
-        void Add(Product product);
+        void Add(Product product, byte[] categoryIds);
 
     }
 }

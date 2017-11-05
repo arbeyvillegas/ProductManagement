@@ -2,6 +2,7 @@
 using ProductManagement.Core.Repositories;
 using ProductManagement.Persistence.DB.Contexts;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProductManagement.Persistence.DB.Repositories
 {
@@ -20,9 +21,14 @@ namespace ProductManagement.Persistence.DB.Repositories
             _context.Complete();
         }
 
-        public IEnumerable<Category> Get()
+        public IQueryable<Category> Get()
         {
             return _context.Categories;
+        }
+
+        public IQueryable<Category> Get(List<byte> ids)
+        {
+            return _context.Categories.Where(c => ids.Contains(c.Id));
         }
     }
 }

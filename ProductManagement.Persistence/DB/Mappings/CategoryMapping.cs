@@ -1,4 +1,5 @@
 ﻿using ProductManagement.Core.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace ProductManagement.Persistence.DB.Mappings
@@ -10,6 +11,10 @@ namespace ProductManagement.Persistence.DB.Mappings
             this.ToTable("Categories");
 
             this.HasKey(e => e.Id);
+
+            this.Property(e => e.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity)
+                .IsRequired();
 
             this.Property(e => e.Name)
                 .HasMaxLength(50)

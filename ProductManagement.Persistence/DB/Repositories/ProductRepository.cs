@@ -4,6 +4,7 @@ using ProductManagement.Persistence.DB.Contexts;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System;
 
 namespace ProductManagement.Persistence.DB.Repositories
 {
@@ -17,13 +18,25 @@ namespace ProductManagement.Persistence.DB.Repositories
             _context = context;
         }
 
-        public void Add(Product product)
+        public void Add(Product product, byte[] categoryIds)
         {
+            if (categoryIds != null)
+            {
+                foreach (var categoryId in categoryIds)
+                {
+                    var category = new Category()
+                    {
+                        Id = categoryId
+                    };
+                    _context.Categories.Attach(category);
+                    product.Categories.Add(category);
+                }
+            }
             _context.Products.Add(product);
             _context.Complete();
         }
 
-        public IEnumerable<Product> Get()
+        public IQueryable<Product> Get()
         {
             return _context.Products;
         }
