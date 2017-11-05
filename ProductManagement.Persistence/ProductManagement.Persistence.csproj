@@ -50,12 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DB\Contexts\Context.cs" />
+    <Compile Include="DB\Contexts\IContext.cs" />
     <Compile Include="DB\Mappings\CategoryMapping.cs" />
     <Compile Include="DB\Mappings\ProductMapping.cs" />
+    <Compile Include="DB\Repositories\CategoryRepository.cs" />
+    <Compile Include="DB\Repositories\ProductRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DB\Repositories\" />
     <Folder Include="Memory\" />
   </ItemGroup>
   <ItemGroup>

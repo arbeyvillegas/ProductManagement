@@ -6,6 +6,8 @@ namespace ProductManagement.Core.Repositories
     public interface IProductRepository
     {
         IEnumerable<Product> Get();
-        void Add(Product Category);
+        Product Get(int id);
+        void Add(Product product);
+
     }
 }

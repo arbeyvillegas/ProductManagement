@@ -6,6 +6,6 @@ namespace ProductManagement.Core.Repositories
     public interface ICategoryRepository
     {
         IEnumerable<Category> Get();
-        void Add(Category Category);
+        void Add(Category category);
     }
 }
