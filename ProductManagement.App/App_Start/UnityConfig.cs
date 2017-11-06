@@ -1,5 +1,9 @@
+using ProductManagement.App.Controllers;
+using ProductManagement.Core.Enumerations;
+using ProductManagement.Core.Repositories;
+using ProductManagement.Persistence.DB.Contexts;
 using System;
-
+using System.Web.Mvc;
 using Unity;
 
 namespace ProductManagement.App
@@ -36,12 +40,13 @@ namespace ProductManagement.App
         /// </remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-            // NOTE: To load from web.config uncomment the line below.
-            // Make sure to add a Unity.Configuration to the using statements.
-            // container.LoadConfiguration();
-
-            // TODO: Register your type's mappings here.
-            // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<IContext, Context>();
+            container.RegisterType<ICategoryRepository, Persistence.DB.Repositories.CategoryRepository>(nameof(EStorageType.Database));
+            container.RegisterType<IProductRepository, Persistence.DB.Repositories.ProductRepository>(nameof(EStorageType.Database));
+            container.RegisterType<ICategoryRepository, Persistence.Memory.Repositories.CategoryRepository>(nameof(EStorageType.Memory));
+            container.RegisterType<IProductRepository, Persistence.Memory.Repositories.ProductRepository>(nameof(EStorageType.Memory));
+            container.RegisterType<IController, ProductController>("Product");
+            container.RegisterType<IController, CategoryController>("Category");
         }
     }
 }

@@ -1,41 +1,44 @@
 ﻿using ProductManagement.App.Models;
+using ProductManagement.Core.Globals;
 using ProductManagement.Core.Models;
 using ProductManagement.Core.Repositories;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using Unity;
 
 namespace ProductManagement.App.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly IUnityContainer _container;
 
-        public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository)
+        public ProductController(IUnityContainer container)
         {
-            _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
+            _container = container;
         }
 
         public ActionResult Index()
         {
-            var products = _productRepository.Get();
+            var productRepository = _container.Resolve<IProductRepository>(GlobalVariables.StorgeType);
+
+            var products = productRepository.Get();
             return View(products);
         }
 
         public ActionResult Details(int id)
         {
-            var product = _productRepository.Get(id);
+            var productRepository = _container.Resolve<IProductRepository>(GlobalVariables.StorgeType);
+            var product = productRepository.Get(id);
             return View(product);
         }
 
         public ActionResult Create()
         {
+            var categoryRepository = _container.Resolve<ICategoryRepository>(GlobalVariables.StorgeType);
+
             var productViewModel = new ProductViewModel();
-            productViewModel.AllCategories = _categoryRepository.Get().ToList();
+            productViewModel.AllCategories = categoryRepository.Get().ToList();
             productViewModel.SelectedCategories = new string[0];
             productViewModel.ProductCategories = new List<Category>();
             return View(productViewModel);
@@ -46,7 +49,8 @@ namespace ProductManagement.App.Controllers
         {
             try
             {
-                _productRepository.Add(model.Product, model.GetSelectedCategories());
+                var productRepository = _container.Resolve<IProductRepository>(GlobalVariables.StorgeType);
+                productRepository.Add(model.Product, model.GetSelectedCategories());
                 return RedirectToAction("Index");
             }
             catch

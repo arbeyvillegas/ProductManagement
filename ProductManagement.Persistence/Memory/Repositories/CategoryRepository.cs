@@ -1,28 +1,47 @@
 ﻿using ProductManagement.Core.Repositories;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProductManagement.Core.Models;
 
 namespace ProductManagement.Persistence.Memory.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
+
+        private static ICollection<Category> Categories;
+
+        public CategoryRepository()
+        {
+            if (Categories == null)
+                Categories = new List<Category>();
+        }
+
         public void Add(Category category)
         {
-            throw new NotImplementedException();
+
+            category.Id = GetNextSequence();
+
+            Categories.Add(category);
         }
 
         public IQueryable<Category> Get()
         {
-            throw new NotImplementedException();
+            return Categories.AsQueryable();
         }
 
         public IQueryable<Category> Get(List<byte> ids)
         {
-            throw new NotImplementedException();
+            return Categories.Where(c => ids.Contains(c.Id)).AsQueryable();
+        }
+
+        private byte GetNextSequence()
+        {
+            byte maxId = 0;
+
+            if (Categories.Count > 0)
+                maxId = Categories.Max(c => c.Id);
+
+            return ++maxId;
         }
     }
 }

@@ -1,21 +1,26 @@
-﻿using ProductManagement.Core.Models;
+﻿using ProductManagement.Core.Globals;
+using ProductManagement.Core.Models;
 using ProductManagement.Core.Repositories;
 using System.Web.Mvc;
+using Unity;
 
 namespace ProductManagement.App.Controllers
 {
     public class CategoryController : Controller
     {
-        private ICategoryRepository _categoryRepository;
+        private readonly IUnityContainer _container;
 
-        public CategoryController(ICategoryRepository categoryRepository)
+        public CategoryController(IUnityContainer container)
         {
-            _categoryRepository = categoryRepository;
+            _container = container;
         }
 
         public ActionResult Index()
         {
-            var categories = _categoryRepository.Get();
+            var categoryRepository = _container.Resolve<ICategoryRepository>(GlobalVariables.StorgeType);
+
+            var categories = categoryRepository.Get();
+
             return View(categories);
         }
 
@@ -29,7 +34,10 @@ namespace ProductManagement.App.Controllers
         {
             try
             {
-                _categoryRepository.Add(category);
+                var categoryRepository = _container.Resolve<ICategoryRepository>(GlobalVariables.StorgeType);
+
+                categoryRepository.Add(category);
+
                 return RedirectToAction("Index");
             }
             catch

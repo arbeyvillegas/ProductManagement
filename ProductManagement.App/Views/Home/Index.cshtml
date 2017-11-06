@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ProductManagement.App.Models.HomeViewModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -17,3 +19,20 @@
         </ul>
     </div>
 </div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <div class="form-group">
+            <h4>Storage Types</h4>
+            <div class="col-md-10">
+                @Html.RadioButtonFor(model => model.StorageType
+                , nameof(ProductManagement.Core.Enumerations.EStorageType.Database)) Database
+                @Html.RadioButtonFor(model => model.StorageType
+                , nameof(ProductManagement.Core.Enumerations.EStorageType.Memory)) Memory
+                <input type="submit" value="Set Storage Type" class="btn btn-default" />
+            </div>
+        </div>
+        @Html.DisplayTextFor(model => model.Message)
+    </div>
+}
